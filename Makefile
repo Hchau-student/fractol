@@ -1,5 +1,5 @@
 NAME = fractol
-CC = gcc -Wall -Wextra
+CC = gcc
 SRC_DIR = ./src/
 OBJ_DIR = obj/
 LIBFT_DIR = libft/
@@ -8,6 +8,7 @@ INC_LIB = -L /usr/local/lib/
 FRAMEWORK = -lmlx -framework OpenGL -framework AppKit
 
 SRCS = main.c check_name.c error.c hooks.c image.c start_programm.c \
+		fracral_draw.c \
 
 OBJ = ${SRCS:c=o}
 

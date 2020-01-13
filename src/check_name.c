@@ -6,11 +6,11 @@
 
 int		is_fractal(char *name, t_fractal **fractal)
 {
-	static t_fractal		valid[FRACTAL_NUM] = {
-			{"Julia", BEGIN_MEANING},
-			{"Mandelbrot", BEGIN_MEANING}
-	};
 	int 			count;
+	static t_fractal		valid[FRACTAL_NUM] = {
+			{"Julia", BEGIN_MEANING, &julia},
+			{"Mandelbrot", BEGIN_MEANING, &mandelbrot},
+	};
 
 	count = FRACTAL_NUM - 1;
 	while (count >= 0)
@@ -18,6 +18,9 @@ int		is_fractal(char *name, t_fractal **fractal)
 		if ((ft_strequ(name, valid[count].name)) == TRUE)
 		{
 			*fractal = &valid[count];
+//			(*fractal)->max.imagine = (*fractal)->min.imagine
+//					+ ((*fractal)->max.real
+//					- (*fractal)->min.real) * SIZE_WINDOW_Y / SIZE_WINDOW_X;
 			return (TRUE);
 		}
 		count--;

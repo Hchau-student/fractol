@@ -16,24 +16,41 @@
 # include "keycode_fractol.h"
 # include "../libft/libft.h"
 # include "mlx.h"
+# include <math.h>
+# include <pthread.h>
 
 # define CHECK			"you made it!"
 # define FAIL			"oh no!"
 # define SIZE_MENU		350
-# define SIZE_WINDOW_X	1300
+# define SIZE_WINDOW_X	1000
 # define SIZE_WINDOW_Y	1000
 # define TRUE			1
 # define FAULSE			0
 # define FRACTAL_NUM	2
+# define JULIA			0
+# define MANDELBROT		1
+# define THREADS		10
+#define GREEN			0
+#define PURPLE			-1
 /*
 **				int			max_iteration;
 **				t_complex	min;
 **				t_complex	max;
 **				t_complex	k(for Julia);
+**				t_complex	c(for formula);
+**				t_complex	factor(хз, зачем);
+**				int			start_line;		для реализации мультипоточности для более быстрой обработки
+**				int			finish_line;	для реализации мультипоточности для более быстрой обработки
 **				int			color_shift;
 */
 
-# define BEGIN_MEANING	50, {-2.0, -2.0}, {2.0, -2.0}, {-0.4, 0.6}, 0
+# define BEGIN_MEANING	50, {-2.0, -2.0}, {2.0, 2.0}, {-0.4, 0.6}, {0.0, 0.0}, {0.0, 0.0}, 0, 0, 0
+
+typedef struct		s_border
+{
+	void			*max;
+	void			*min;
+}					t_border;
 
 typedef struct		s_complex
 {
@@ -66,7 +83,12 @@ typedef struct		s_fractal
 	t_complex		min;
 	t_complex		max;
 	t_complex		k;
+	t_complex		c;
+	t_complex		factor;
 	int				color_shift;
+	int				start_line;
+	int				finish_line;
+	int				(*count_fractal)(struct s_fractal *);
 
 }					t_fractal;
 
@@ -76,6 +98,7 @@ typedef struct		s_full_image
 	t_image			*drawing;
 	int				menu_on;
 	t_window		*ptr;
+	t_fractal		fractal;
 }					t_full_image;
 
 /*
@@ -105,6 +128,10 @@ void		fractol_error(char *reason);
 /*
 **		fractal work
 */
+int			get_fractal_img(t_full_image *full);
 void		draw(t_full_image *full);
+int			mandelbrot(t_fractal *mandelbrot);
+int			julia(t_fractal *julia);
+void		draw_fractal(t_full_image *fractol);
 
 #endif

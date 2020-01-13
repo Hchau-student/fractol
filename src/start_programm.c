@@ -19,6 +19,9 @@ void	open_window(t_window **ptr, char *name)
 void	draw(t_full_image *full)
 {
 	mlx_clear_window(full->ptr->mlx, full->ptr->win);
+	draw_fractal(full);
+	mlx_put_image_to_window(full->ptr->mlx, full->ptr->win,
+							full->drawing->image, 0, 0);
 	if (full->menu_on == TRUE)
 	{
 		mlx_put_image_to_window(full->ptr->mlx, full->ptr->win,
@@ -31,7 +34,7 @@ void	manage_processes(t_full_image *full, t_fractal *fractal)
 	draw(full);
 	mlx_hook(full->ptr->win, 2, 0, key_press, full);
 	mlx_hook(full->ptr->win, 17, 0, close_fractol, &full->ptr);
-	mlx_hook(full->ptr->win, 4, 0, mouse_scroll, &full);
+	mlx_hook(full->ptr->win, 4, 0, mouse_scroll, full);
 	mlx_loop(full->ptr->mlx);
 }
 
@@ -42,7 +45,9 @@ void	start_the_programm(t_fractal *fractal)
 	ft_putstr(fractal->name);
 	open_window(&full.ptr, fractal->name);
 	create_img(&full.menu, SIZE_MENU, SIZE_WINDOW_Y, full.ptr);
+	create_img(&full.drawing, SIZE_WINDOW_X, SIZE_WINDOW_Y, full.ptr);
 	fill_menu(&full.menu);
 	full.menu_on = TRUE;
+	full.fractal = *fractal;
 	manage_processes(&full, fractal);
 }
