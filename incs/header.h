@@ -38,19 +38,28 @@
 **				t_complex	max;
 **				t_complex	k(for Julia);
 **				t_complex	c(for formula);
-**				t_complex	factor(хз, зачем);
+**				t_complex	factor;
 **				int			start_line;		для реализации мультипоточности для более быстрой обработки
 **				int			finish_line;	для реализации мультипоточности для более быстрой обработки
 **				int			color_shift;
 */
 
-# define BEGIN_MEANING	50, {-2.0, -2.0}, {2.0, 2.0}, {-0.4, 0.6}, {0.0, 0.0}, {0.0, 0.0}, 0, 0, 0
+# define BEGIN_MEANING	10, {-2.0, -2.0}, {2.0, 2.0}, {-0.4, 0.6}, {0.0, 0.0}, {0.0, 0.0}, 0, 0, 0, 0
 
-typedef struct		s_border
+typedef struct		s_coord
 {
-	void			*max;
-	void			*min;
-}					t_border;
+	int				x;
+	int				y;
+	int				z;
+	int				color;
+}					t_coord;
+
+typedef struct		s_rotation
+{
+	double			x_rot;
+	double			y_rot;
+	double			z_rot;
+}					t_rotation;
 
 typedef struct		s_complex
 {
@@ -88,8 +97,8 @@ typedef struct		s_fractal
 	int				color_shift;
 	int				start_line;
 	int				finish_line;
+	int				rotate;
 	int				(*count_fractal)(struct s_fractal *);
-
 }					t_fractal;
 
 typedef struct		s_full_image
@@ -99,6 +108,8 @@ typedef struct		s_full_image
 	int				menu_on;
 	t_window		*ptr;
 	t_fractal		fractal;
+	t_rotation		rotation;
+	t_coord			**z_matrix;
 }					t_full_image;
 
 /*
@@ -133,5 +144,8 @@ void		draw(t_full_image *full);
 int			mandelbrot(t_fractal *mandelbrot);
 int			julia(t_fractal *julia);
 void		draw_fractal(t_full_image *fractol);
+void		rotate_node(t_coord *current, t_rotation rot);
+void		img_from_matrix(t_image **image, t_coord **z_matrix);
+void	rotate_all(t_coord ***z_matrix, t_rotation rot);
 
 #endif

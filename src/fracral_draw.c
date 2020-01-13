@@ -42,6 +42,8 @@ int		get_color(int iteration, int max_iteration, int shift)
 	int		blue;
 
 	t = (double)iteration / (double)max_iteration;
+	if (iteration == 50)
+		return (0x00);
 	if (shift == 0)
 	{
 		red = (int)(9 * (1 - t) * pow(t, 3) * 255);
@@ -79,7 +81,8 @@ int		get_fractal_img(t_full_image *full)
 {
 	int 			y;
 	int 			x;
-	int			i;
+	int				i;
+	t_coord			cur;
 
 	y = full->fractal.start_line;
 	i = 0;
@@ -87,7 +90,7 @@ int		get_fractal_img(t_full_image *full)
 			/ (SIZE_WINDOW_X - 1);
 	full->fractal.factor.imagine = (full->fractal.max.imagine - full->fractal.min.imagine)
 			/ (SIZE_WINDOW_Y - 1);
-	while (y < full->fractal.finish_line)
+	while (y < full->fractal.finish_line && y < SIZE_WINDOW_Y)
 	{
 		full->fractal.c.imagine = full->fractal.max.imagine - y * full->fractal.factor.imagine;
 		x = 0;
@@ -104,6 +107,9 @@ int		get_fractal_img(t_full_image *full)
 	return (0);
 }
 
+/*
+**		скорость, подруга!
+*/
 void		draw_fractal(t_full_image *full)
 {
 	pthread_t		threads[THREADS];
@@ -125,5 +131,5 @@ void		draw_fractal(t_full_image *full)
 		i++;
 	}
 	while (i-- > 0)
-	pthread_join(threads[i], NULL);
+		pthread_join(threads[i], NULL);
 }

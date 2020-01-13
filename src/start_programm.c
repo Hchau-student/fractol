@@ -20,6 +20,9 @@ void	draw(t_full_image *full)
 {
 	mlx_clear_window(full->ptr->mlx, full->ptr->win);
 	draw_fractal(full);
+//	if (full->fractal.rotate != 0)
+//		rotate_all(&(full->z_matrix), full->rotation);
+//	img_from_matrix(&full->drawing, full->z_matrix);
 	mlx_put_image_to_window(full->ptr->mlx, full->ptr->win,
 							full->drawing->image, 0, 0);
 	if (full->menu_on == TRUE)
@@ -41,12 +44,20 @@ void	manage_processes(t_full_image *full, t_fractal *fractal)
 void	start_the_programm(t_fractal *fractal)
 {
 	t_full_image	full;
+	int 			i;
 
+	i = 0;
 	ft_putstr(fractal->name);
 	open_window(&full.ptr, fractal->name);
 	create_img(&full.menu, SIZE_MENU, SIZE_WINDOW_Y, full.ptr);
 	create_img(&full.drawing, SIZE_WINDOW_X, SIZE_WINDOW_Y, full.ptr);
 	fill_menu(&full.menu);
+//	full.z_matrix = (t_coord **)ft_memalloc(sizeof(t_coord *) * (SIZE_WINDOW_Y + 1));
+//	while (i <= SIZE_WINDOW_Y)
+//	{
+//		full.z_matrix[i] = (t_coord *)ft_memalloc(sizeof(t_coord) * (SIZE_WINDOW_X + 1));
+//		i++;
+//	}
 	full.menu_on = TRUE;
 	full.fractal = *fractal;
 	manage_processes(&full, fractal);

@@ -53,6 +53,24 @@ int			fill_menu(t_image **menu)
 	return (0);
 }
 
+void		img_from_matrix(t_image **image, t_coord **z_matrix)
+{
+	int 	x;
+	int 	y;
+
+	x = 0;
+	while (x < SIZE_WINDOW_X)
+	{
+		y = 0;
+		while (y < SIZE_WINDOW_Y)
+		{
+			image_set_pixel(image, z_matrix[x][y].x, z_matrix[x][y].y, z_matrix[x][y].color);
+			y++;
+		}
+		x++;
+	}
+}
+
 void		clear_image(t_image **image, unsigned long size)
 {
 	ft_bzero((*image)->data_addr, size);
