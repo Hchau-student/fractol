@@ -3,6 +3,7 @@
 //
 
 #include "../incs/header.h"
+#include <limits.h>
 
 int		close_fractol(t_window *param)
 {
@@ -29,6 +30,15 @@ void	set_defaults(t_fractal *fractal)
 		fractal->k.real = 0.0;
 		fractal->k.imagine = 0.0;
 	}
+}
+
+int		key_patrick(int keycode, t_full_image *param)
+{
+	if (keycode == 3)
+		param->patrick_on = param->patrick_on == FAULSE ? TRUE : FAULSE;
+	else
+		return (0);
+	return (1);
 }
 
 int		key_default(int keycode, t_full_image *param)
@@ -81,12 +91,40 @@ int		key_rotate(int keycode, t_full_image *param)
 
 int		mouse_motion(int x, int y, t_full_image *full)
 {
+	int 	remember_color;
+
 	if (full->fractal.is_mooving == TRUE)
 	{
 		full->fractal.k.real = 4 * ((double) x / SIZE_WINDOW_X - 0.5);
 		full->fractal.k.imagine = 4 * ((double) (SIZE_WINDOW_Y - y) / SIZE_WINDOW_Y - 0.5);
 	}
+	if (full->patrick_on != FAULSE)
+	{
+		if (full->patrick_on > 50)
+		{
+			remember_color = full->fractal.color_shift;
+			set_defaults(&full->fractal);
+			if (remember_color == LAST_COLOR)
+				full->fractal.color_shift = FIRST_COLOR;
+			else
+				full->fractal.color_shift = --remember_color;
+			full->patrick_on = TRUE;
+		}
+		mouse_scroll(SCROLL_DOWN, x, y, full);
+		full->patrick_on++;
+	}
 	draw(full);
+	if (full->patrick_on != FAULSE)
+	{
+		mlx_put_image_to_window(full->ptr->mlx, full->ptr->win,
+							full->patrick->image, x - 20, y - 10);
+	}
+	if (full->patrick_on > 30)
+	{
+//		put_mask(&full->big_patrick, 0xEC000000, SIZE_WINDOW_X, SIZE_WINDOW_Y - 74);
+		mlx_put_image_to_window(full->ptr->mlx, full->ptr->win,
+								full->big_patrick->image, (full->patrick_on - 100) * 3, 0);
+	}
 	return (0);
 }
 
@@ -150,7 +188,7 @@ int		key_press(int keycode, t_full_image *full)
 	printf("%d\n", keycode);
 	if ((key_menu(keycode, full)) || (set_color_shift(keycode, full))
 		|| (key_stop_k_move(keycode, full)) || (key_exit(keycode, full))
-		|| (key_default(keycode, full)))
+		|| (key_default(keycode, full)) || (key_patrick(keycode, full)))
 		;
 	draw(full);
 	return (0);

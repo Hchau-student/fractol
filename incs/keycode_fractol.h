@@ -16,6 +16,8 @@
 # define RED				-2
 # define CLOWN				-3
 # define GREEN				-4
+# define LAST_COLOR			-4
+# define FIRST_COLOR		0
 /*
 **		colors in keycode
 */

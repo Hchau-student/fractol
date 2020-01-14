@@ -148,6 +148,7 @@ void		clear_image(t_image **image, unsigned long size);
 void		image_set_pixel(t_image **image, int x, int y, int color);
 void		draw(t_full_image *full);
 void		open_image(t_image **image, char *filename, int size_x, int size_y);
+void		put_mask(t_image **image, int mask, int x, int y);
 
 /*
 **		error management

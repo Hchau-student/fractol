@@ -15,3 +15,25 @@ void		open_image(t_image **image, char *filename, int size_x, int size_y)
 												  &((*image)->size_line),
 												  &((*image)->endian));
 }
+
+void		put_mask(t_image **image, int mask, int x, int y)
+{
+
+	int					i;
+	int					j;
+
+	i = 0;
+	j = 0;
+	while (i < x)
+	{
+		while (j < y)
+		{
+			*(int *)((*image)->data_addr + ((i * 4 + j * (*image)->size_line))) += mask;
+			j++;
+		}
+		j = 0;
+		i++;
+	}
+}
+
+//*(int *)(img->data_addr + ((x * 4 + y * img->size_line))) = color;

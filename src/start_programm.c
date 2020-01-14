@@ -25,8 +25,7 @@ void	draw(t_full_image *full)
 //	img_from_matrix(&full->drawing, full->z_matrix);
 	mlx_put_image_to_window(full->ptr->mlx, full->ptr->win,
 							full->drawing->image, 0, 0);
-	mlx_put_image_to_window(full->ptr->mlx, full->ptr->win,
-							full->patrick->image, 0, 0);
+
 	if (full->menu_on == TRUE)
 	{
 		mlx_put_image_to_window(full->ptr->mlx, full->ptr->win,
@@ -59,8 +58,10 @@ void	start_the_programm(t_fractal *fractal)
 	full.patrick = (t_image *)malloc(sizeof(t_image));
 	full.patrick->mlx_ptr = full.ptr->mlx;
 	full.big_patrick->mlx_ptr = full.ptr->mlx;
+	full.patrick_on = FAULSE;
 	open_image(&full.patrick, "./norm1.xpm", SIZE_WINDOW_X, SIZE_WINDOW_Y);
-	open_image(&full.big_patrick, "./большой_патрик.xpm", SIZE_WINDOW_X, SIZE_WINDOW_Y);
+	open_image(&full.big_patrick, "./ветки.xpm", SIZE_WINDOW_X, SIZE_WINDOW_Y);
+	put_mask(&full.big_patrick, 0xEC000000, SIZE_WINDOW_X + 400, SIZE_WINDOW_Y - 74);
 	full.menu_on = TRUE;
 	full.fractal = *fractal;
 	/*
