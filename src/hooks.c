@@ -10,6 +10,36 @@ int		close_fractol(t_window *param)
 	return (0);
 }
 
+void	set_defaults(t_fractal *fractal)
+{
+	fractal->max_iteration = 50;
+	fractal->min.real = -2.0;
+	fractal->min.imagine = -2.0;
+	fractal->max.real = 2.0;
+	fractal->max.imagine = 2.0;
+	fractal->cur.real = 0.0;
+	fractal->color_shift = 0;
+	if (ft_strequ(fractal->name, "Julia") == TRUE)
+	{
+		fractal->k.real = 0.4;
+		fractal->k.imagine = 0.1;
+	}
+	else
+	{
+		fractal->k.real = 0.0;
+		fractal->k.imagine = 0.0;
+	}
+}
+
+int		key_default(int keycode, t_full_image *param)
+{
+	if (keycode == DEFAULT)
+		set_defaults(&param->fractal);
+	else
+		return (0);
+	return (1);
+}
+
 int		key_menu(int keycode, t_full_image *param)
 {
 	if (keycode == MENU)
@@ -18,6 +48,15 @@ int		key_menu(int keycode, t_full_image *param)
 		return (1);
 	}
 	return (0);
+}
+
+int		key_stop_k_move(int keycode, t_full_image *param)
+{
+	if (keycode == MOOVE)
+		param->fractal.is_mooving = param->fractal.is_mooving == FAULSE ? TRUE : FAULSE;
+	else
+		return (0);
+	return (1);
 }
 
 int		key_rotate(int keycode, t_full_image *param)
@@ -42,14 +81,10 @@ int		key_rotate(int keycode, t_full_image *param)
 
 int		mouse_motion(int x, int y, t_full_image *full)
 {
-	if (full->fractal.if_julia == TRUE)
+	if (full->fractal.is_mooving == TRUE)
 	{
 		full->fractal.k.real = 4 * ((double) x / SIZE_WINDOW_X - 0.5);
 		full->fractal.k.imagine = 4 * ((double) (SIZE_WINDOW_Y - y) / SIZE_WINDOW_Y - 0.5);
-	} else
-	{
-		full->fractal.constant.real = 4 * ((double) x / SIZE_WINDOW_X - 0.5);
-		full->fractal.constant.imagine = 4 * ((double) (SIZE_WINDOW_Y - y) / SIZE_WINDOW_Y - 0.5);
 	}
 	draw(full);
 	return (0);
@@ -57,15 +92,15 @@ int		mouse_motion(int x, int y, t_full_image *full)
 
 int		set_color_shift(int keycode, t_full_image *param)
 {
-	if (keycode == 18 || keycode == 83)
+	if (DARK_THEME)
 		param->fractal.color_shift = 0;
-	else if (keycode == 19 || keycode == 84)
+	else if (BLUE_THEME)
 		param->fractal.color_shift = -1;
-	else if (keycode == 20 || keycode == 85)
+	else if (RED_THEME)
 		param->fractal.color_shift = -2;
-	else if (keycode == 21 || keycode == 86)
+	else if (CLOWN_THEME)
 		param->fractal.color_shift = -3;
-	else if (keycode == 23 || keycode == 87)
+	else if (GREEN_THEME)
 		param->fractal.color_shift = -4;
 	else
 		return (0);
@@ -112,9 +147,10 @@ int		key_exit(int keycode, t_full_image *full_image)
 
 int		key_press(int keycode, t_full_image *full)
 {
-//	printf("%d\n", keycode);
+	printf("%d\n", keycode);
 	if ((key_menu(keycode, full)) || (set_color_shift(keycode, full))
-		|| (key_exit(keycode, full)))
+		|| (key_stop_k_move(keycode, full)) || (key_exit(keycode, full))
+		|| (key_default(keycode, full)))
 		;
 	draw(full);
 	return (0);

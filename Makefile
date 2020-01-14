@@ -8,7 +8,7 @@ INC_LIB = -L /usr/local/lib/
 FRAMEWORK = -lmlx -framework OpenGL -framework AppKit
 
 SRCS = main.c check_name.c error.c hooks.c image.c start_programm.c \
-		fracral_draw.c rotate_try.c \
+		fracral_draw.c rotate_try.c fractal_formulas.c \
 
 OBJ = ${SRCS:c=o}
 

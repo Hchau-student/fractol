@@ -26,23 +26,21 @@
 # define SIZE_WINDOW_Y	1000
 # define TRUE			1
 # define FAULSE			0
-# define FRACTAL_NUM	2
+# define FRACTAL_NUM	4
 # define THREADS		10
-#define GREEN			0
-#define PURPLE			-1
 /*
 **				int			max_iteration;
 **				t_complex	min;
 **				t_complex	max;
 **				t_complex	k(for Julia);
-**				t_complex	c(for formula);
-**				t_complex	factor;
+**				t_complex	constant(for formula);
+**				t_complex	current;
 **				int			start_line;		для реализации мультипоточности для более быстрой обработки
 **				int			finish_line;	для реализации мультипоточности для более быстрой обработки
 **				int			color_shift;
 */
 
-# define BEGIN_MEANING	50, {-2.0, -2.0}, {2.0, 2.0}, {-0.4, 0.6}, {0.0, 0.0}, {0.0, 0.0}, 0, 0, 0, 0
+# define BEGIN_MEANING	50, {-2.0, -2.0}, {2.0, 2.0}, {0.4, 0.1}, {0.0, 0.0}, {0.0, 0.0}, 0, 0, 0, 0
 
 typedef struct		s_coord
 {
@@ -97,7 +95,7 @@ typedef struct		s_fractal
 	int				finish_line;
 	int				rotate;
 	int				(*count_fractal)(struct s_fractal *);
-	int				if_julia;
+	int				is_mooving;
 }					t_fractal;
 
 typedef struct		s_full_image
@@ -123,6 +121,7 @@ int			key_press(int keycode, t_full_image *param);
 int			close_fractol(t_window *param);
 int			mouse_scroll(int button, int x, int y, t_full_image *param);
 int			mouse_motion(int x, int y, t_full_image *full);
+int			key_stop_k_move(int keycode, t_full_image *param);
 /*
 **		image work
 */
@@ -142,10 +141,14 @@ void		fractol_error(char *reason);
 */
 int			get_fractal_img(t_full_image *full);
 int			mandelbrot(t_fractal *mandelbrot);
-int			julia(t_fractal *julia);
-void		draw_fractal(t_full_image *fractol);
 //void		rotate_node(t_coord *current, t_rotation rot);?
 //void		img_from_matrix(t_image **image, t_coord **z_matrix);?
 //void		rotate_all(t_coord ***z_matrix, t_rotation rot);?
+/*
+**		fractal formulas
+*/
+int			julia(t_fractal *julia);
+void		draw_fractal(t_full_image *fractol);
+int			fuck(t_fractal *cock);
 
 #endif
