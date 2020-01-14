@@ -27,8 +27,6 @@
 # define TRUE			1
 # define FAULSE			0
 # define FRACTAL_NUM	2
-# define JULIA			0
-# define MANDELBROT		1
 # define THREADS		10
 #define GREEN			0
 #define PURPLE			-1
@@ -44,7 +42,7 @@
 **				int			color_shift;
 */
 
-# define BEGIN_MEANING	10, {-2.0, -2.0}, {2.0, 2.0}, {-0.4, 0.6}, {0.0, 0.0}, {0.0, 0.0}, 0, 0, 0, 0
+# define BEGIN_MEANING	50, {-2.0, -2.0}, {2.0, 2.0}, {-0.4, 0.6}, {0.0, 0.0}, {0.0, 0.0}, 0, 0, 0, 0
 
 typedef struct		s_coord
 {
@@ -92,13 +90,14 @@ typedef struct		s_fractal
 	t_complex		min;
 	t_complex		max;
 	t_complex		k;
-	t_complex		c;
-	t_complex		factor;
+	t_complex		constant;
+	t_complex		cur;
 	int				color_shift;
 	int				start_line;
 	int				finish_line;
 	int				rotate;
 	int				(*count_fractal)(struct s_fractal *);
+	int				if_julia;
 }					t_fractal;
 
 typedef struct		s_full_image
@@ -123,6 +122,7 @@ void		manage_processes(t_full_image *full, t_fractal *fractal);
 int			key_press(int keycode, t_full_image *param);
 int			close_fractol(t_window *param);
 int			mouse_scroll(int button, int x, int y, t_full_image *param);
+int			mouse_motion(int x, int y, t_full_image *full);
 /*
 **		image work
 */
@@ -130,6 +130,7 @@ int			fill_menu(t_image **menu);
 void		create_img(t_image **image, int x, int y, t_window *local);
 void		clear_image(t_image **image, unsigned long size);
 void		image_set_pixel(t_image **image, int x, int y, int color);
+void		draw(t_full_image *full);
 
 /*
 **		error management
@@ -140,12 +141,11 @@ void		fractol_error(char *reason);
 **		fractal work
 */
 int			get_fractal_img(t_full_image *full);
-void		draw(t_full_image *full);
 int			mandelbrot(t_fractal *mandelbrot);
 int			julia(t_fractal *julia);
 void		draw_fractal(t_full_image *fractol);
-void		rotate_node(t_coord *current, t_rotation rot);
-void		img_from_matrix(t_image **image, t_coord **z_matrix);
-void	rotate_all(t_coord ***z_matrix, t_rotation rot);
+//void		rotate_node(t_coord *current, t_rotation rot);?
+//void		img_from_matrix(t_image **image, t_coord **z_matrix);?
+//void		rotate_all(t_coord ***z_matrix, t_rotation rot);?
 
 #endif

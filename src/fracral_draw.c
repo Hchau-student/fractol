@@ -2,7 +2,9 @@
 // Created by Hugor Chau on 2020-01-13.
 //
 #include "../incs/header.h"
-
+/*
+**		отрисовка пикселя мандельброт
+*/
 int		mandelbrot(t_fractal *mandelbrot)
 {
 	int			iteration;
@@ -11,16 +13,16 @@ int		mandelbrot(t_fractal *mandelbrot)
 	t_complex	local;
 
 	iteration = 0;
-	z.real = mandelbrot->c.real;
-	z.imagine = mandelbrot->c.imagine;
+	z.real = mandelbrot->constant.real;
+	z.imagine = mandelbrot->constant.imagine;
 	local.real = pow(z.real, 2.0);
 	local.imagine = pow(z.imagine, 2.0);
 	while ((local.real + local.imagine) <= 4
 		   && iteration < mandelbrot->max_iteration)
 	{
 		extra = z.real;
-		z.real = local.real - local.imagine + mandelbrot->c.real;
-		z.imagine = 2.0 * extra * z.imagine + mandelbrot->c.imagine;
+		z.real = local.real - local.imagine + mandelbrot->constant.real;
+		z.imagine = 2.0 * extra * z.imagine + mandelbrot->constant.imagine;
 		local.real = pow(z.real, 2.0);
 		local.imagine = pow(z.imagine, 2.0);
 		iteration++;
@@ -28,12 +30,32 @@ int		mandelbrot(t_fractal *mandelbrot)
 	return (iteration);
 }
 
+/*
+**		отрисовка пикселя Жулиа
+*/
 int			julia(t_fractal *julia)
 {
-	ft_putstr(CHECK);
-	return (0);
-}
+	int			iteration;
+	t_complex	z;
+	double		extra;
+	t_complex	local;
 
+	iteration = 0;
+	z.real = julia->constant.real;
+	z.imagine = julia->constant.imagine;
+	while (pow(z.real, 2.0) + pow(z.imagine, 2.0) <= 4
+		   && iteration < julia->max_iteration)
+	{
+		extra = z.real;
+		z.real = pow(z.real, 2.0) - pow(z.imagine, 2.0) + julia->k.real;
+		z.imagine = 2.0 * extra * z.imagine + julia->k.imagine;
+		iteration++;
+	}
+	return (iteration);
+}
+/*
+**		рассчёт цвета и только
+*/
 int		get_color(int iteration, int max_iteration, int shift)
 {
 	double	t;
@@ -76,27 +98,28 @@ int		get_color(int iteration, int max_iteration, int shift)
 	}
 	return (red << 16 | green << 8 | blue);
 }
-
+/*
+**		разбиение на потоки, передача пикселей в следующую функцию
+*/
 int		get_fractal_img(t_full_image *full)
 {
 	int 			y;
 	int 			x;
 	int				i;
-	t_coord			cur;
 
 	y = full->fractal.start_line;
 	i = 0;
-	full->fractal.factor.real = (full->fractal.max.real - full->fractal.min.real)
+	full->fractal.cur.real = (full->fractal.max.real - full->fractal.min.real)
 			/ (SIZE_WINDOW_X - 1);
-	full->fractal.factor.imagine = (full->fractal.max.imagine - full->fractal.min.imagine)
+	full->fractal.cur.imagine = (full->fractal.max.imagine - full->fractal.min.imagine)
 			/ (SIZE_WINDOW_Y - 1);
 	while (y < full->fractal.finish_line && y < SIZE_WINDOW_Y)
 	{
-		full->fractal.c.imagine = full->fractal.max.imagine - y * full->fractal.factor.imagine;
+		full->fractal.constant.imagine = full->fractal.max.imagine - y * full->fractal.cur.imagine;
 		x = 0;
 		while (x < SIZE_WINDOW_X)
 		{
-			full->fractal.c.real = full->fractal.min.real + x * full->fractal.factor.real;
+			full->fractal.constant.real = full->fractal.min.real + x * full->fractal.cur.real;
 			image_set_pixel(&full->drawing, x, y,
 					get_color(full->fractal.count_fractal(&full->fractal),
 							full->fractal.max_iteration, full->fractal.color_shift));
@@ -116,9 +139,9 @@ void		draw_fractal(t_full_image *full)
 	t_full_image	current[THREADS];
 	int				i;
 
-	full->fractal.factor.real = (full->fractal.max.real - full->fractal.min.real)
+	full->fractal.cur.real = (full->fractal.max.real - full->fractal.min.real)
 			/ (SIZE_WINDOW_X - 1);
-	full->fractal.factor.imagine = (full->fractal.max.imagine - full->fractal.min.imagine)
+	full->fractal.cur.imagine = (full->fractal.max.imagine - full->fractal.min.imagine)
 			/ (SIZE_WINDOW_Y - 1);
 	i = 0;
 	while (i < THREADS)

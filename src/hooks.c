@@ -40,6 +40,21 @@ int		key_rotate(int keycode, t_full_image *param)
 	return (1);
 }
 
+int		mouse_motion(int x, int y, t_full_image *full)
+{
+	if (full->fractal.if_julia == TRUE)
+	{
+		full->fractal.k.real = 4 * ((double) x / SIZE_WINDOW_X - 0.5);
+		full->fractal.k.imagine = 4 * ((double) (SIZE_WINDOW_Y - y) / SIZE_WINDOW_Y - 0.5);
+	} else
+	{
+		full->fractal.constant.real = 4 * ((double) x / SIZE_WINDOW_X - 0.5);
+		full->fractal.constant.imagine = 4 * ((double) (SIZE_WINDOW_Y - y) / SIZE_WINDOW_Y - 0.5);
+	}
+	draw(full);
+	return (0);
+}
+
 int		set_color_shift(int keycode, t_full_image *param)
 {
 	if (keycode == 18 || keycode == 83)
@@ -57,33 +72,31 @@ int		set_color_shift(int keycode, t_full_image *param)
 	return (1);
 }
 
-static double	interpolate(double start, double end, double interpolation)
+static double	get_position(double start, double end, double zoom)
 {
-	return (start + ((end - start) * interpolation));
+	return (start + ((end - start) * zoom));
 }
 
 int		mouse_scroll(int button, int x, int y, t_full_image *param)
 {
 	double		zoom;
-	double		interpolation;
 	double		new_x;
 	double		new_y;
 
 	if (button == SCROLL_UP)
-		zoom = 0.80;
+		zoom = 1.25;
 	else if (button == SCROLL_DOWN)
-		zoom = 1.20;
+		zoom = 0.80;
 	else
 		return (0);
 	new_x = (double)x / (SIZE_WINDOW_X / (param->fractal.max.real - param->fractal.min.real))
 			+ param->fractal.min.real;
 	new_y = (double)y / (SIZE_WINDOW_Y / (param->fractal.max.imagine - param->fractal.min.imagine))
 			* -1 + param->fractal.max.imagine;
-	interpolation = 1.0 / zoom;
-	param->fractal.min.real = interpolate(new_x, param->fractal.min.real, interpolation);
-	param->fractal.min.imagine = interpolate(new_y, param->fractal.min.imagine, interpolation);
-	param->fractal.max.real = interpolate(new_x, param->fractal.max.real, interpolation);
-	param->fractal.max.imagine = interpolate(new_y, param->fractal.max.imagine, interpolation);
+	param->fractal.min.real = get_position(new_x, param->fractal.min.real, zoom);
+	param->fractal.min.imagine = get_position(new_y, param->fractal.min.imagine, zoom);
+	param->fractal.max.real = get_position(new_x, param->fractal.max.real, zoom);
+	param->fractal.max.imagine = get_position(new_y, param->fractal.max.imagine, zoom);
 	draw(param);
 	return (1);
 }

@@ -38,6 +38,8 @@ void	manage_processes(t_full_image *full, t_fractal *fractal)
 	mlx_hook(full->ptr->win, 2, 0, key_press, full);
 	mlx_hook(full->ptr->win, 17, 0, close_fractol, &full->ptr);
 	mlx_hook(full->ptr->win, 4, 0, mouse_scroll, full);
+//	if (fractal->if_julia == TRUE)
+	mlx_hook(full->ptr->win, 6, 0, mouse_motion, full);
 	mlx_loop(full->ptr->mlx);
 }
 

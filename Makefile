@@ -1,5 +1,5 @@
 NAME = fractol
-CC = gcc
+CC = gcc -Ofast
 SRC_DIR = ./src/
 OBJ_DIR = obj/
 LIBFT_DIR = libft/

@@ -35,7 +35,7 @@ int			fill_menu(t_image **menu)
 	mask = 0xFF000000;
 	while (i < SIZE_MENU)
 	{
-		while (mask > 0xAA000000 && i < SIZE_MENU)
+		while (mask > 0x44000000 && i < SIZE_MENU)
 		{
 			while (j < SIZE_WINDOW_Y)
 			{
@@ -46,7 +46,7 @@ int			fill_menu(t_image **menu)
 			i++;
 		}
 		while (j < SIZE_WINDOW_Y)
-			image_set_pixel(menu, i, j++, 0xAACCAAFF);
+			image_set_pixel(menu, i, j++, 0x44CCAAFF);
 		j = 0;
 		i++;
 	}
@@ -78,7 +78,7 @@ void		clear_image(t_image **image, unsigned long size)
 
 void		create_img(t_image **image, int x, int y, t_window *local)
 {
-	*image = (t_image *)malloc(sizeof(t_image));//нужно замоллочить извне?
+	*image = (t_image *)malloc(sizeof(t_image));
 	(*image)->mlx_ptr = local->mlx;
 	(*image)->image = mlx_new_image((*image)->mlx_ptr,
 											x, y);
