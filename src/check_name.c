@@ -8,10 +8,14 @@ int		is_fractal(char *name, t_fractal **fractal)
 {
 	int 			count;
 	static t_fractal		valid[FRACTAL_NUM] = {
-			{"Julia", BEGIN_MEANING, &julia, TRUE},
-			{"Mandelbrot", BEGIN_MEANING, &mandelbrot, TRUE},
-			{"Хуй", BEGIN_MEANING, &fuck, TRUE},
-			{"Cock", BEGIN_MEANING, &fuck, TRUE}
+			{"Julia", DEFAULT_ITERATIONS, JULIA_DEFAULT_K,
+				DEFAULT_COMPLEX, BEGIN_MEANING, &julia, TRUE},
+			{"Mandelbrot", DEFAULT_ITERATIONS, {0.0, 0.0},
+				DEFAULT_COMPLEX, BEGIN_MEANING, &mandelbrot, TRUE},
+			{"Хуй", DEFAULT_ITERATIONS, {0.0, 0.0},
+					DEFAULT_COMPLEX, BEGIN_MEANING, &fuck, TRUE},
+			{"Cock", DEFAULT_ITERATIONS, {0.0, 0.0},
+					DEFAULT_COMPLEX, BEGIN_MEANING, &fuck, TRUE}
 	};
 
 	count = FRACTAL_NUM - 1;

@@ -6,7 +6,6 @@
 /*
 **		рассчёт цвета и только
 */
-
 void	recalculate(int *first, int *second, int *third, double t)
 {
 	*first = (int)(9 * (1 - t) * pow(t, 3) * 255);
@@ -33,6 +32,8 @@ int		get_color(int iteration, int max_iteration, int shift)
 		recalculate(&blue, &red, &green, t);
 	else if (shift == CLOWN)
 	{
+		iteration = iteration >= 20 ? iteration = 20 : iteration;
+		t = (double)iteration / (double)20;
 		red = ((int)(8.5 * pow((1 - t), 3) * t * 255) & 0x11) * 100;
 		green = ((int)(15 * pow((1 - t), 2) * pow(t, 2) * 255) & 0x11) * 100;
 		blue = ((int)(9 * (1 - t) * pow(t, 3) * 255) & 0x11) * 100;
@@ -41,6 +42,7 @@ int		get_color(int iteration, int max_iteration, int shift)
 		recalculate(&blue, &green, &red, t);
 	return (red << 16 | green << 8 | blue);
 }
+
 /*
 **		разбиение на потоки, передача пикселей в следующую функцию
 */

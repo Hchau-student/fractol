@@ -40,8 +40,10 @@
 **				int			color_shift;
 */
 
-# define BEGIN_MEANING	50, {-2.0, -2.0}, {2.0, 2.0}, {0.4, 0.1}, {0.0, 0.0}, {0.0, 0.0}, 0, 0, 0, 0
-
+# define DEFAULT_ITERATIONS		50
+# define JULIA_DEFAULT_K		{0.4, 0.1}
+# define BEGIN_MEANING			0, 0, 0, 0
+# define DEFAULT_COMPLEX 		{-2.0, -2.0}, {2.0, 2.0}, {0.0, 0.0}, {0.0, 0.0}
 typedef struct		s_coord
 {
 	int				x;
@@ -85,9 +87,9 @@ typedef struct		s_fractal
 {
 	char 			*name;
 	int				max_iteration;
+	t_complex		k;
 	t_complex		min;
 	t_complex		max;
-	t_complex		k;
 	t_complex		constant;
 	t_complex		cur;
 	int				color_shift;
@@ -100,11 +102,26 @@ typedef struct		s_fractal
 
 typedef struct		s_full_image
 {
+	/*
+	**		все имаджи
+	*/
 	t_image			*menu;
 	t_image			*drawing;
+	t_image			*patrick;
+	t_image			*big_patrick;
+	/*
+	**		характеристики имаджей
+	*/
 	int				menu_on;
+	int				patrick_on;
+	/*
+	**		передаваемые значения
+	*/
 	t_window		*ptr;
 	t_fractal		fractal;
+	/*
+	**		на всякий случай
+	*/
 	t_rotation		rotation;
 	t_coord			**z_matrix;
 }					t_full_image;
@@ -130,6 +147,7 @@ void		create_img(t_image **image, int x, int y, t_window *local);
 void		clear_image(t_image **image, unsigned long size);
 void		image_set_pixel(t_image **image, int x, int y, int color);
 void		draw(t_full_image *full);
+void		open_image(t_image **image, char *filename, int size_x, int size_y);
 
 /*
 **		error management
