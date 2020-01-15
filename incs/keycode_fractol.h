@@ -31,4 +31,9 @@
 */
 # define MOOVE				36
 # define DEFAULT			49
+/*
+**		Patrick mode
+*/
+# define PAY_RESPECT		3
+# define CHANGE_MUSIC		5
 #endif

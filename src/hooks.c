@@ -5,89 +5,6 @@
 #include "../incs/header.h"
 #include <limits.h>
 
-int		close_fractol(t_window *param)
-{
-	exit(0);
-	return (0);
-}
-
-void	set_defaults(t_fractal *fractal)
-{
-	fractal->max_iteration = 50;
-	fractal->min.real = -2.0;
-	fractal->min.imagine = -2.0;
-	fractal->max.real = 2.0;
-	fractal->max.imagine = 2.0;
-	fractal->cur.real = 0.0;
-	fractal->color_shift = 0;
-	if (ft_strequ(fractal->name, "Julia") == TRUE)
-	{
-		fractal->k.real = 0.4;
-		fractal->k.imagine = 0.1;
-	}
-	else
-	{
-		fractal->k.real = 0.0;
-		fractal->k.imagine = 0.0;
-	}
-}
-
-int		key_patrick(int keycode, t_full_image *param)
-{
-	if (keycode == 3)
-		param->patrick_on = param->patrick_on == FAULSE ? TRUE : FAULSE;
-	else
-		return (0);
-	return (1);
-}
-
-int		key_default(int keycode, t_full_image *param)
-{
-	if (keycode == DEFAULT)
-		set_defaults(&param->fractal);
-	else
-		return (0);
-	return (1);
-}
-
-int		key_menu(int keycode, t_full_image *param)
-{
-	if (keycode == MENU)
-	{
-		param->menu_on = param->menu_on == TRUE ? FAULSE : TRUE;
-		return (1);
-	}
-	return (0);
-}
-
-int		key_stop_k_move(int keycode, t_full_image *param)
-{
-	if (keycode == MOOVE)
-		param->fractal.is_mooving = param->fractal.is_mooving == FAULSE ? TRUE : FAULSE;
-	else
-		return (0);
-	return (1);
-}
-
-int		key_rotate(int keycode, t_full_image *param)
-{
-	if (keycode == 12)
-		param->rotation.z_rot -= 5.0;
-	else if (keycode == 14)
-		param->rotation.z_rot += 5.0;
-	else if (keycode == 1)
-		param->rotation.x_rot -= 5.0;
-	else if (keycode == 13)
-		param->rotation.x_rot += 5.0;
-	else if (keycode == 0)
-		param->rotation.y_rot -= 5.0;
-	else if (keycode == 2)
-		param->rotation.y_rot += 5.0;
-	else
-		return (0);
-	param->fractal.rotate = 1;
-	return (1);
-}
 
 int		mouse_motion(int x, int y, t_full_image *full)
 {
@@ -95,54 +12,36 @@ int		mouse_motion(int x, int y, t_full_image *full)
 
 	if (full->fractal.is_mooving == TRUE)
 	{
-		full->fractal.k.real = 4 * ((double) x / SIZE_WINDOW_X - 0.5);
-		full->fractal.k.imagine = 4 * ((double) (SIZE_WINDOW_Y - y) / SIZE_WINDOW_Y - 0.5);
+		full->fractal.count.k.real = 4 * ((double) x / SIZE_WINDOW_X - 0.5);
+		full->fractal.count.k.imagine = 4 * ((double) (SIZE_WINDOW_Y - y) / SIZE_WINDOW_Y - 0.5);
 	}
-	if (full->patrick_on != FAULSE)
+	if (full->patrick.on != FAULSE)
 	{
-		if (full->patrick_on > 50)
+		if (full->patrick.on > 50)
 		{
 			remember_color = full->fractal.color_shift;
-			set_defaults(&full->fractal);
+			set_defaults(&full->fractal.count, POSITION);
 			if (remember_color == LAST_COLOR)
 				full->fractal.color_shift = FIRST_COLOR;
 			else
 				full->fractal.color_shift = --remember_color;
-			full->patrick_on = TRUE;
+			full->patrick.on = TRUE;
 		}
 		mouse_scroll(SCROLL_DOWN, x, y, full);
-		full->patrick_on++;
+		full->patrick.on++;
 	}
 	draw(full);
-	if (full->patrick_on != FAULSE)
+	if (full->patrick.on != FAULSE)
 	{
-		mlx_put_image_to_window(full->ptr->mlx, full->ptr->win,
-							full->patrick->image, x - 20, y - 10);
+		mlx_put_image_to_window(full->ptr.mlx, full->ptr.win,
+							full->patrick.drawing->image, x - 20, y - 10);
 	}
-	if (full->patrick_on > 30)
+	if (full->patrick.depr && full->patrick.on > 30)
 	{
-//		put_mask(&full->big_patrick, 0xEC000000, SIZE_WINDOW_X, SIZE_WINDOW_Y - 74);
-		mlx_put_image_to_window(full->ptr->mlx, full->ptr->win,
-								full->big_patrick->image, (full->patrick_on - 100) * 3, 0);
+		mlx_put_image_to_window(full->ptr.mlx, full->ptr.win,
+								full->patrick.backgrownd->image, (full->patrick.on - 100) * 3, 200);
 	}
 	return (0);
-}
-
-int		set_color_shift(int keycode, t_full_image *param)
-{
-	if (DARK_THEME)
-		param->fractal.color_shift = 0;
-	else if (BLUE_THEME)
-		param->fractal.color_shift = -1;
-	else if (RED_THEME)
-		param->fractal.color_shift = -2;
-	else if (CLOWN_THEME)
-		param->fractal.color_shift = -3;
-	else if (GREEN_THEME)
-		param->fractal.color_shift = -4;
-	else
-		return (0);
-	return (1);
 }
 
 static double	get_position(double start, double end, double zoom)
@@ -162,25 +61,16 @@ int		mouse_scroll(int button, int x, int y, t_full_image *param)
 		zoom = 0.80;
 	else
 		return (0);
-	new_x = (double)x / (SIZE_WINDOW_X / (param->fractal.max.real - param->fractal.min.real))
-			+ param->fractal.min.real;
-	new_y = (double)y / (SIZE_WINDOW_Y / (param->fractal.max.imagine - param->fractal.min.imagine))
-			* -1 + param->fractal.max.imagine;
-	param->fractal.min.real = get_position(new_x, param->fractal.min.real, zoom);
-	param->fractal.min.imagine = get_position(new_y, param->fractal.min.imagine, zoom);
-	param->fractal.max.real = get_position(new_x, param->fractal.max.real, zoom);
-	param->fractal.max.imagine = get_position(new_y, param->fractal.max.imagine, zoom);
+	new_x = (double)x / (SIZE_WINDOW_X / (param->fractal.count.max.real - param->fractal.count.min.real))
+			+ param->fractal.count.min.real;
+	new_y = (double)y / (SIZE_WINDOW_Y / (param->fractal.count.max.imagine - param->fractal.count.min.imagine))
+			* -1 + param->fractal.count.max.imagine;
+	param->fractal.count.min.real = get_position(new_x, param->fractal.count.min.real, zoom);
+	param->fractal.count.min.imagine = get_position(new_y, param->fractal.count.min.imagine, zoom);
+	param->fractal.count.max.real = get_position(new_x, param->fractal.count.max.real, zoom);
+	param->fractal.count.max.imagine = get_position(new_y, param->fractal.count.max.imagine, zoom);
 	draw(param);
 	return (1);
-}
-
-int		key_exit(int keycode, t_full_image *full_image)
-{
-	if (keycode == ESCAPE)
-	{
-		exit(0);
-	}
-	return (0);
 }
 
 int		key_press(int keycode, t_full_image *full)

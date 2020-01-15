@@ -6,7 +6,6 @@
 
 void		open_image(t_image **image, char *filename, int size_x, int size_y)
 {
-//	(*image) = (t_image *)malloc(sizeof(t_image));
 	if (((*image)->image = mlx_xpm_file_to_image((*image)->mlx_ptr,
 							filename, &(size_x), &(size_y))) == NULL)
 		return;
@@ -35,5 +34,3 @@ void		put_mask(t_image **image, int mask, int x, int y)
 		i++;
 	}
 }
-
-//*(int *)(img->data_addr + ((x * 4 + y * img->size_line))) = color;

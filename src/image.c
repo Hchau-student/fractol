@@ -35,7 +35,7 @@ int			fill_menu(t_image **menu)
 	mask = 0xFF000000;
 	while (i < SIZE_MENU)
 	{
-		while (mask > 0xAA000000 && i < SIZE_MENU)
+		while (mask > 0x90000000 && i < SIZE_MENU)
 		{
 			while (j < SIZE_WINDOW_Y)
 			{
@@ -46,7 +46,7 @@ int			fill_menu(t_image **menu)
 			i++;
 		}
 		while (j < SIZE_WINDOW_Y)
-			image_set_pixel(menu, i, j++, 0xAACC88FF);
+			image_set_pixel(menu, i, j++, 0x90CC88FF);
 		j = 0;
 		i++;
 	}
