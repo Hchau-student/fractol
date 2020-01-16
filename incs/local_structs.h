@@ -9,6 +9,13 @@
 /*
 **		все, что необходимо для вычисления фрактала
 */
+
+typedef union		s_union
+{
+	long double		original;
+	short int		set[9];
+}					t_union;
+
 typedef struct		s_fractal
 {
 	char 			*name;
@@ -38,6 +45,7 @@ typedef struct		s_draw_fractal
 	int				is_mooving;		//флаг расчёта коэффициента искажения фрактала
 	t_image			*drawing;		//само изображение
 	t_fractal		count;		//фотмулы фрактала
+	t_coord			move_map;
 
 }					t_draw_fractal;
 
@@ -70,4 +78,4 @@ typedef struct		s_full_image
 	t_window		ptr;
 }					t_full_image;
 
-#endif //ЛОХ_LOCAL_STRUCTS_H
+#endif

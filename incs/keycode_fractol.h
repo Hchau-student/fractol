@@ -9,6 +9,13 @@
 # define SCROLL_UP			5
 # define SCROLL_DOWN		4
 /*
+**		move image
+*/
+# define UP					126
+# define DOWN				125
+# define LEFT				123
+# define RIGHT				124
+/*
 **		colors in code
 */
 # define DARK				0

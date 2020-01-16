@@ -78,7 +78,8 @@ int		key_press(int keycode, t_full_image *full)
 	printf("%d\n", keycode);
 	if ((key_menu(keycode, full)) || (set_color_shift(keycode, full))
 		|| (key_stop_k_move(keycode, full)) || (key_exit(keycode, full))
-		|| (key_default(keycode, full)) || (key_patrick(keycode, full)))
+		|| (key_default(keycode, full)) || (key_patrick(keycode, full))
+		|| (key_map_move(keycode, full)))
 		;
 	draw(full);
 	return (0);

@@ -5,8 +5,6 @@
 
 void	write_rest_menu(t_draw_menu *menu, t_window *ptr)
 {
-	mlx_put_image_to_window(ptr->mlx, ptr->win,
-							menu->drawing->image, SIZE_WINDOW_X - SIZE_MENU, 0);
 	mlx_string_put(ptr->mlx, ptr->win, 900, 100,
 				   0x00FFFFFF, "Mouse:");
 	mlx_string_put(ptr->mlx, ptr->win, 870, 140,
@@ -34,7 +32,7 @@ void	current_menu(t_draw_menu *menu, t_window *ptr, t_full_image *full)
 					   0x00BBBBFF, "torn the meme mode!");
 		mlx_string_put(ptr->mlx, ptr->win, 870, 480,
 					   0x00BBBBFF, "torn the meme mode!");
-		mlx_string_put(ptr->mlx, ptr->win, 870, 680,
+		mlx_string_put(ptr->mlx, ptr->win, 870, 740,
 					   0x00BBBBFF, "press g");
 	}
 	else
@@ -43,9 +41,9 @@ void	current_menu(t_draw_menu *menu, t_window *ptr, t_full_image *full)
 					   0x00BBBBFF, "scroll up/down");
 		mlx_string_put(ptr->mlx, ptr->win, 870, 480,
 					   0x00BBBBFF, "1, 2, 3, 4, 5");
-		mlx_string_put(ptr->mlx, ptr->win, 870, 680,
+		mlx_string_put(ptr->mlx, ptr->win, 870, 720,
 					   0x00BBBBFF, "(only in meme mode):");
-		mlx_string_put(ptr->mlx, ptr->win, 870, 700,
+		mlx_string_put(ptr->mlx, ptr->win, 870, 740,
 					   0x00BBBBFF, "press g");
 	}
 	if (full->fractal.is_mooving)
@@ -58,20 +56,29 @@ void	current_menu(t_draw_menu *menu, t_window *ptr, t_full_image *full)
 
 void	print_menu(t_draw_menu *menu, t_window *ptr, t_full_image *full)
 {
+	mlx_put_image_to_window(ptr->mlx, ptr->win,
+					menu->drawing->image, SIZE_WINDOW_X - SIZE_MENU, 0);
 	current_menu(menu, ptr, full);
 	mlx_string_put(ptr->mlx, ptr->win, 870, 200,
 				   0x00BBBBFF, "rescale fractal:");
 	mlx_string_put(ptr->mlx, ptr->win, 870, 520,
-				   0x00BBBBFF, "set default:");
+				   0x00BBBBFF, "move:");
 	mlx_string_put(ptr->mlx, ptr->win, 870, 540,
-				   0x00BBBBFF, "space");
+				   0x00BBBBFF, "     < || >");
+	mlx_string_put(ptr->mlx, ptr->win, 870, 540,
+				   0x00BBBBFF, "use    ^_");
+	mlx_string_put(ptr->mlx, ptr->win, 875, 540,
+				   0x00BBBBFF, "     -   - keys");
+	mlx_string_put(ptr->mlx, ptr->win, 870, 580,
+				   0x00BBBBFF, "set default:");
 	mlx_string_put(ptr->mlx, ptr->win, 870, 600,
+				   0x00BBBBFF, "space");
+	mlx_string_put(ptr->mlx, ptr->win, 870, 640,
 				   0x00BBBBFF, "meme mode:");
-	mlx_string_put(ptr->mlx, ptr->win, 870, 620,
-				   0x00BBBBFF, "press f (on/off)");
 	mlx_string_put(ptr->mlx, ptr->win, 870, 660,
+				   0x00BBBBFF, "press f (on/off)");
+	mlx_string_put(ptr->mlx, ptr->win, 870, 680,
 				   0x00BBBBFF, "change music");
-
 	write_rest_menu(menu, ptr);
 }
 

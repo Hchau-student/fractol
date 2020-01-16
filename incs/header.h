@@ -69,6 +69,7 @@ int			key_menu(int keycode, t_full_image *param);
 int			key_stop_k_move(int keycode, t_full_image *param);
 int			key_rotate(int keycode, t_full_image *param);
 int			key_exit(int keycode, t_full_image *full_image);
+int			key_map_move(int keycode, t_full_image *param);
 /*
 **		actions
 */
@@ -104,5 +105,18 @@ int			mandelbrot(t_fractal *mandelbrot);
 int			julia(t_fractal *julia);
 void		draw_fractal(t_draw_fractal *fractol);
 int			fuck(t_fractal *cock);
+/*
+**		my extra long doubles
+*/
+double		my_pow(double src, double power);
+double		my_plus(double first, double second);
+double		my_minus(double first, double second);
+double		my_multiplication(double first, double second);
+double		my_more(double first, double second);
+double		my_less(double first, double second);
+t_complex	my_init(double re, double im);
+double		int_to_double(int src);
+double		my_div(double first, double second);
+int			double_to_int(double src);
 
 #endif

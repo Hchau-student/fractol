@@ -17,5 +17,6 @@ int		main(int ac, char **check)
 	if (ac < 2)
 		fractol_error(MISSING_NAME);
 	check_name(check, ac);
+//	my_pow(2.899988898898989);
 	return (0);
 }

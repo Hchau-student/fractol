@@ -9,24 +9,24 @@
 */
 int		mandelbrot(t_fractal *mandelbrot)
 {
-	int			iteration;
-	t_complex	z;
-	double		extra;
-	t_complex	local;
+	int				iteration;
+	t_complex		z;
+	long double		extra;
+	t_complex		local;
 
 	iteration = 0;
 	z.real = mandelbrot->constant.real;
 	z.imagine = mandelbrot->constant.imagine;
-	local.real = pow(z.real, 2.0);
-	local.imagine = pow(z.imagine, 2.0);
+	local.real = powl(z.real, 2.0);
+	local.imagine = powl(z.imagine, 2.0);
 	while ((local.real + local.imagine) <= 4
 		   && iteration < mandelbrot->max_iteration)
 	{
 		extra = z.real;
-		z.real = local.real - local.imagine + mandelbrot->constant.real - mandelbrot->k.real;
+		z.real = local.real + mandelbrot->constant.real - (mandelbrot->k.real + local.imagine);
 		z.imagine = 2.0 * extra * z.imagine + mandelbrot->constant.imagine - mandelbrot->k.real;
-		local.real = pow(z.real, 2.0);
-		local.imagine = pow(z.imagine, 2.0);
+		local.real = powl(z.real, 2.0);
+		local.imagine = powl(z.imagine, 2.0);
 		iteration++;
 	}
 	return (iteration);

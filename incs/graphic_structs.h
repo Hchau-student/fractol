@@ -25,8 +25,8 @@ typedef struct		s_image
 
 typedef struct		s_complex
 {
-	double			real;
-	double			imagine;
+	long double		real;
+	long double		imagine;
 }					t_complex;
 
 typedef struct		s_coord

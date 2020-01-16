@@ -63,25 +63,61 @@ int		key_stop_k_move(int keycode, t_full_image *param)
 	return (1);
 }
 
-int		key_rotate(int keycode, t_full_image *param)
+static double	get_position(double start, double end, double zoom)
 {
-	if (keycode == 12)
-		param->fractal.rotation.z_rot -= 5.0;
-	else if (keycode == 14)
-		param->fractal.rotation.z_rot += 5.0;
-	else if (keycode == 1)
-		param->fractal.rotation.x_rot -= 5.0;
-	else if (keycode == 13)
-		param->fractal.rotation.x_rot += 5.0;
-	else if (keycode == 0)
-		param->fractal.rotation.y_rot -= 5.0;
-	else if (keycode == 2)
-		param->fractal.rotation.y_rot += 5.0;
-	else
-		return (0);
-	param->fractal.rotate = 1;
-	return (1);
+	return (start + ((end - start) * zoom));
 }
+
+int		key_map_move(int keycode, t_full_image *param)
+{
+	double		shift;
+
+	if (keycode == LEFT)
+	{
+		shift = param->fractal.count.max.real - param->fractal.count.min.real;
+		param->fractal.count.max.real += shift / 100.0;
+		param->fractal.count.min.real += shift / 100.0;
+	}
+	else if (keycode == RIGHT)
+	{
+		shift = param->fractal.count.max.real - param->fractal.count.min.real;
+		param->fractal.count.max.real -= shift / 100.0;
+		param->fractal.count.min.real -= shift / 100.0;
+	}
+	else if (keycode == DOWN)
+	{
+		shift = param->fractal.count.max.imagine - param->fractal.count.min.imagine;
+		param->fractal.count.max.imagine += shift / 100.0;
+		param->fractal.count.min.imagine += shift / 100.0;
+	}
+	else if (keycode == UP)
+	{
+		shift = param->fractal.count.max.imagine - param->fractal.count.min.imagine;
+		param->fractal.count.max.imagine -= shift / 100.0;
+		param->fractal.count.min.imagine -= shift / 100.0;
+	}
+}
+
+//
+//int		key_rotate(int keycode, t_full_image *param)
+//{
+//	if (keycode == 12)
+//		param->fractal.rotation.z_rot -= 5.0;
+//	else if (keycode == 14)
+//		param->fractal.rotation.z_rot += 5.0;
+//	else if (keycode == 1)
+//		param->fractal.rotation.x_rot -= 5.0;
+//	else if (keycode == 13)
+//		param->fractal.rotation.x_rot += 5.0;
+//	else if (keycode == 0)
+//		param->fractal.rotation.y_rot -= 5.0;
+//	else if (keycode == 2)
+//		param->fractal.rotation.y_rot += 5.0;
+//	else
+//		return (0);
+//	param->fractal.rotate = 1;
+//	return (1);
+//}
 
 int		key_exit(int keycode, t_full_image *param)
 {
