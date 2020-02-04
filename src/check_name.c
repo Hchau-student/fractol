@@ -12,6 +12,8 @@ int		is_fractal(char *name, t_fractal **fractal)
 				DEFAULT_COMPLEX, &julia},
 			{"Mandelbrot", DEFAULT_ITERATIONS, DEFAULT_K,
 				DEFAULT_COMPLEX, &mandelbrot},
+			{"Хуй", DEFAULT_ITERATIONS, DEFAULT_K,
+					DEFAULT_COMPLEX, &fuck}
 	};
 
 	count = FRACTAL_NUM - 1;
@@ -20,9 +22,9 @@ int		is_fractal(char *name, t_fractal **fractal)
 		if ((ft_strequ(name, valid[count].name)) == TRUE)
 		{
 			*fractal = &valid[count];
-//			(*fractal)->max.imagine = (*fractal)->min.imagine
-//					+ ((*fractal)->max.real
-//					- (*fractal)->min.real) * SIZE_WINDOW_Y / SIZE_WINDOW_X;
+//			(*fractal)->max.y = (*fractal)->min.y
+//					+ ((*fractal)->max.x
+//					- (*fractal)->min.x) * SIZE_WINDOW_Y / SIZE_WINDOW_X;
 			return (TRUE);
 		}
 		count--;
@@ -40,6 +42,7 @@ int		check_name(char **name, int stop)
 	{
 		if ((is_fractal(name[i], &key)) == TRUE)
 		{
+//			if ()
 			start_the_programm(key);
 		}
 		else

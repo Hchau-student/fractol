@@ -10,11 +10,12 @@
 **		все, что необходимо для вычисления фрактала
 */
 
-typedef union		s_union
+
+typedef struct		s_complex
 {
-	long double		original;
-	short int		set[9];
-}					t_union;
+	long double		x;
+	long double		y;
+}					t_complex;
 
 typedef struct		s_fractal
 {
@@ -38,13 +39,10 @@ typedef struct		s_draw_fractal
 {
 	int				start_line;
 	int				finish_line;
-	int				rotate;			//флаг вращения
 	int				color_shift;
-	t_rotation		rotation;		//оси вращения
-	t_coord			**z_matrix;		//z-буффер
 	int				is_mooving;		//флаг расчёта коэффициента искажения фрактала
 	t_image			*drawing;		//само изображение
-	t_fractal		count;		//фотмулы фрактала
+	t_fractal		count;			//фотмулы фрактала
 	t_coord			move_map;
 
 }					t_draw_fractal;
@@ -58,6 +56,7 @@ typedef struct		s_draw_menu
 typedef struct		s_patrick
 {
 	t_image			*drawing;
+	t_image			*drawing2;
 	t_image			*backgrownd;
 	t_image			*stars;
 	int				on;

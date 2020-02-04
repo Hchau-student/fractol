@@ -23,12 +23,6 @@ typedef struct		s_image
 	void			*mlx_ptr;
 }					t_image;
 
-typedef struct		s_complex
-{
-	long double		real;
-	long double		imagine;
-}					t_complex;
-
 typedef struct		s_coord
 {
 	int				x;

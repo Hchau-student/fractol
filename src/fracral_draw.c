@@ -57,11 +57,11 @@ int		get_fractal_img(t_draw_fractal *full)
 	i = 0;
 	while (y < full->finish_line && y < SIZE_WINDOW_Y)
 	{
-		full->count.constant.imagine = full->count.max.imagine - y * full->count.cur.imagine;
+		full->count.constant.y = full->count.max.y - y * full->count.cur.y;
 		x = 0;
 		while (x < SIZE_WINDOW_X)
 		{
-			full->count.constant.real = full->count.min.real + x * full->count.cur.real;
+			full->count.constant.x = full->count.min.x + x * full->count.cur.x;
 			image_set_pixel(&full->drawing, x, y,
 					get_color(full->count.formula(&full->count),
 							full->count.max_iteration, full->color_shift));
@@ -78,9 +78,9 @@ void		draw_fractal(t_draw_fractal *fractal)
 	t_draw_fractal	current[THREADS];
 	int				i;
 
-	fractal->count.cur.real = (fractal->count.max.real - fractal->count.min.real)
+	fractal->count.cur.x = (fractal->count.max.x - fractal->count.min.x)
 							  / (SIZE_WINDOW_X - 1);
-	fractal->count.cur.imagine = (fractal->count.max.imagine - fractal->count.min.imagine)
+	fractal->count.cur.y = (fractal->count.max.y - fractal->count.min.y)
 								 / (SIZE_WINDOW_Y - 1);
 	i = 0;
 	while (i < THREADS)

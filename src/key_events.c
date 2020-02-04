@@ -3,6 +3,9 @@
 //
 
 #include "../incs/header.h"
+#include <sys/types.h>
+#include <unistd.h>
+
 
 int		key_patrick(int keycode, t_full_image *param)
 {
@@ -21,7 +24,10 @@ int		key_patrick(int keycode, t_full_image *param)
 		if (param->patrick.on == FAULSE)
 			param->patrick.depr = FAULSE;
 		if (param->patrick.on == TRUE)
+		{
 			system("afplay ./extra_src/shooting.mp3 &");
+			system("open \"https://www.youtube.com/watch?v=MSENH3FE2As\" &");
+		}
 		else
 		{
 			system("pkill afplay");
@@ -74,27 +80,27 @@ int		key_map_move(int keycode, t_full_image *param)
 
 	if (keycode == LEFT)
 	{
-		shift = param->fractal.count.max.real - param->fractal.count.min.real;
-		param->fractal.count.max.real += shift / 100.0;
-		param->fractal.count.min.real += shift / 100.0;
+		shift = param->fractal.count.max.x - param->fractal.count.min.x;
+		param->fractal.count.max.x += shift / 100.0;
+		param->fractal.count.min.x += shift / 100.0;
 	}
 	else if (keycode == RIGHT)
 	{
-		shift = param->fractal.count.max.real - param->fractal.count.min.real;
-		param->fractal.count.max.real -= shift / 100.0;
-		param->fractal.count.min.real -= shift / 100.0;
+		shift = param->fractal.count.max.x - param->fractal.count.min.x;
+		param->fractal.count.max.x -= shift / 100.0;
+		param->fractal.count.min.x -= shift / 100.0;
 	}
 	else if (keycode == DOWN)
 	{
-		shift = param->fractal.count.max.imagine - param->fractal.count.min.imagine;
-		param->fractal.count.max.imagine += shift / 100.0;
-		param->fractal.count.min.imagine += shift / 100.0;
+		shift = param->fractal.count.max.y - param->fractal.count.min.y;
+		param->fractal.count.max.y += shift / 100.0;
+		param->fractal.count.min.y += shift / 100.0;
 	}
 	else if (keycode == UP)
 	{
-		shift = param->fractal.count.max.imagine - param->fractal.count.min.imagine;
-		param->fractal.count.max.imagine -= shift / 100.0;
-		param->fractal.count.min.imagine -= shift / 100.0;
+		shift = param->fractal.count.max.y - param->fractal.count.min.y;
+		param->fractal.count.max.y -= shift / 100.0;
+		param->fractal.count.min.y -= shift / 100.0;
 	}
 }
 

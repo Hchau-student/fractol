@@ -30,21 +30,21 @@ int		close_fractol(t_window *param)
 void	set_defaults(t_fractal *fractal, int flag)
 {
 	fractal->max_iteration = 50;
-	fractal->min.real = -2.0;
-	fractal->min.imagine = -2.0;
-	fractal->max.real = 2.0;
-	fractal->max.imagine = 2.0;
-	fractal->cur.real = 0.0;
+	fractal->min.x = -2.0;
+	fractal->min.y = -2.0;
+	fractal->max.x = 2.0;
+	fractal->max.y = 2.0;
+	fractal->cur.x = 0.0;
 	if (flag != ALL)
 		return ;
 	if (ft_strequ(fractal->name, "Julia") == TRUE)
 	{
-		fractal->k.real = 0.4;
-		fractal->k.imagine = 0.1;
+		fractal->k.x = 0.4;
+		fractal->k.y = 0.1;
 	}
 	else
 	{
-		fractal->k.real = 0.0;
-		fractal->k.imagine = 0.0;
+		fractal->k.x = 0.0;
+		fractal->k.y = 0.0;
 	}
 }

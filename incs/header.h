@@ -19,15 +19,16 @@
 # include "mlx.h"
 # include <math.h>
 # include <pthread.h>
+# include <OpenCL/opencl.h>
 
 # define CHECK			"you made it!"
 # define FAIL			"oh no!"
 # define SIZE_MENU		350
-# define SIZE_WINDOW_X	1100
-# define SIZE_WINDOW_Y	1100
+# define SIZE_WINDOW_X	1000
+# define SIZE_WINDOW_Y	1000
 # define TRUE			1
 # define FAULSE			0
-# define FRACTAL_NUM	2
+# define FRACTAL_NUM	3
 # define THREADS		10
 # define ALL			1
 # define POSITION		0
@@ -105,18 +106,5 @@ int			mandelbrot(t_fractal *mandelbrot);
 int			julia(t_fractal *julia);
 void		draw_fractal(t_draw_fractal *fractol);
 int			fuck(t_fractal *cock);
-/*
-**		my extra long doubles
-*/
-double		my_pow(double src, double power);
-double		my_plus(double first, double second);
-double		my_minus(double first, double second);
-double		my_multiplication(double first, double second);
-double		my_more(double first, double second);
-double		my_less(double first, double second);
-t_complex	my_init(double re, double im);
-double		int_to_double(int src);
-double		my_div(double first, double second);
-int			double_to_int(double src);
 
 #endif

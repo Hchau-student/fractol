@@ -12,12 +12,12 @@ int		mouse_motion(int x, int y, t_full_image *full)
 
 	if (full->fractal.is_mooving == TRUE)
 	{
-		full->fractal.count.k.real = 4 * ((double) x / SIZE_WINDOW_X - 0.5);
-		full->fractal.count.k.imagine = 4 * ((double) (SIZE_WINDOW_Y - y) / SIZE_WINDOW_Y - 0.5);
+		full->fractal.count.k.x = 4 * ((double) x / SIZE_WINDOW_X - 0.5);
+		full->fractal.count.k.y = 4 * ((double) (SIZE_WINDOW_Y - y) / SIZE_WINDOW_Y - 0.5);
 	}
 	if (full->patrick.on != FAULSE)
 	{
-		if (full->patrick.on > 50)
+		if (full->patrick.on > 60)
 		{
 			remember_color = full->fractal.color_shift;
 			set_defaults(&full->fractal.count, POSITION);
@@ -33,8 +33,12 @@ int		mouse_motion(int x, int y, t_full_image *full)
 	draw(full);
 	if (full->patrick.on != FAULSE)
 	{
+		if (full->patrick.on < 10 || (full->patrick.on > 20 && full->patrick.on < 30) || (full->patrick.on > 40 && full->patrick.on < 50 ))
+			mlx_put_image_to_window(full->ptr.mlx, full->ptr.win,
+									full->patrick.drawing->image, x - 20, y - 10);
+		else
 		mlx_put_image_to_window(full->ptr.mlx, full->ptr.win,
-							full->patrick.drawing->image, x - 20, y - 10);
+							full->patrick.drawing2->image, x - 20, y - 10);
 	}
 	if (full->patrick.depr && full->patrick.on > 30)
 	{
@@ -61,14 +65,14 @@ int		mouse_scroll(int button, int x, int y, t_full_image *param)
 		zoom = 0.80;
 	else
 		return (0);
-	new_x = (double)x / (SIZE_WINDOW_X / (param->fractal.count.max.real - param->fractal.count.min.real))
-			+ param->fractal.count.min.real;
-	new_y = (double)y / (SIZE_WINDOW_Y / (param->fractal.count.max.imagine - param->fractal.count.min.imagine))
-			* -1 + param->fractal.count.max.imagine;
-	param->fractal.count.min.real = get_position(new_x, param->fractal.count.min.real, zoom);
-	param->fractal.count.min.imagine = get_position(new_y, param->fractal.count.min.imagine, zoom);
-	param->fractal.count.max.real = get_position(new_x, param->fractal.count.max.real, zoom);
-	param->fractal.count.max.imagine = get_position(new_y, param->fractal.count.max.imagine, zoom);
+	new_x = (double)x / (SIZE_WINDOW_X / (param->fractal.count.max.x - param->fractal.count.min.x))
+			+ param->fractal.count.min.x;
+	new_y = (double)y / (SIZE_WINDOW_Y / (param->fractal.count.max.y - param->fractal.count.min.y))
+			* -1 + param->fractal.count.max.y;
+	param->fractal.count.min.x = get_position(new_x, param->fractal.count.min.x, zoom);
+	param->fractal.count.min.y = get_position(new_y, param->fractal.count.min.y, zoom);
+	param->fractal.count.max.x = get_position(new_x, param->fractal.count.max.x, zoom);
+	param->fractal.count.max.y = get_position(new_y, param->fractal.count.max.y, zoom);
 	draw(param);
 	return (1);
 }
