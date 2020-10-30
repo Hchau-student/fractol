@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   keycode_fractol.h                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hchau <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/02/10 14:45:30 by hchau             #+#    #+#             */
+/*   Updated: 2020/02/10 14:45:36 by hchau            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef KEYCODE_FRACTOL_H
 # define KEYCODE_FRACTOL_H
@@ -28,11 +39,16 @@
 /*
 **		colors in keycode
 */
-# define DARK_THEME			keycode == 18 || keycode == 83
-# define BLUE_THEME			keycode == 19 || keycode == 84
-# define RED_THEME			keycode == 20 || keycode == 85
-# define CLOWN_THEME		keycode == 21 || keycode == 86
-# define GREEN_THEME		keycode == 23 || keycode == 87
+# define DARK_THEME			18
+# define BLUE_THEME			19
+# define RED_THEME			20
+# define CLOWN_THEME		21
+# define GREEN_THEME		23
+# define DARK_THEME_O		83
+# define BLUE_THEME_O		84
+# define RED_THEME_O		85
+# define CLOWN_THEME_O		86
+# define GREEN_THEME_O		87
 /*
 **		fix/default
 */

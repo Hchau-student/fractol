@@ -1,43 +1,18 @@
-//
-// Created by Hugor Chau on 2020-01-15.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   key_events.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hchau <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/02/10 13:53:04 by hchau             #+#    #+#             */
+/*   Updated: 2020/02/10 13:53:11 by hchau            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../incs/header.h"
 #include <sys/types.h>
 #include <unistd.h>
-
-
-int		key_patrick(int keycode, t_full_image *param)
-{
-	if (keycode == CHANGE_MUSIC && param->patrick.on != FAULSE)
-	{
-		param->patrick.depr = param->patrick.depr == TRUE ? FAULSE : TRUE;
-		system("pkill afplay");
-		if (param->patrick.depr)
-			system("afplay ./extra_src/sound-of-silence.mp3 &");
-		else
-			system("afplay ./extra_src/shooting.mp3 &");
-	}
-	if (keycode == PAY_RESPECT)
-	{
-		param->patrick.on = param->patrick.on == FAULSE ? TRUE : FAULSE;
-		if (param->patrick.on == FAULSE)
-			param->patrick.depr = FAULSE;
-		if (param->patrick.on == TRUE)
-		{
-			system("afplay ./extra_src/shooting.mp3 &");
-			system("open \"https://www.youtube.com/watch?v=MSENH3FE2As\" &");
-		}
-		else
-		{
-			system("pkill afplay");
-			system("afplay ./extra_src/wilhelm_scream.mp3 &");
-		}
-	}
-	else
-		return (0);
-	return (1);
-}
 
 int		key_default(int keycode, t_full_image *param)
 {
@@ -63,75 +38,42 @@ int		key_menu(int keycode, t_full_image *param)
 int		key_stop_k_move(int keycode, t_full_image *param)
 {
 	if (keycode == MOOVE)
-		param->fractal.is_mooving = param->fractal.is_mooving == FAULSE ? TRUE : FAULSE;
+		param->fractal.is_mooving =
+				param->fractal.is_mooving == FAULSE ? TRUE : FAULSE;
 	else
 		return (0);
 	return (1);
 }
 
-static double	get_position(double start, double end, double zoom)
+void	move(double shift, long double *res1, long double *res2)
 {
-	return (start + ((end - start) * zoom));
+	*res1 += shift / 100.0;
+	*res2 += shift / 100.0;
 }
 
 int		key_map_move(int keycode, t_full_image *param)
 {
 	double		shift;
 
-	if (keycode == LEFT)
+	shift = param->fractal.count.max.x - param->fractal.count.min.x;
+	if (keycode == RIGHT)
+		move(shift, &param->fractal.count.max.x, &param->fractal.count.min.x);
+	else if (keycode == LEFT)
 	{
-		shift = param->fractal.count.max.x - param->fractal.count.min.x;
-		param->fractal.count.max.x += shift / 100.0;
-		param->fractal.count.min.x += shift / 100.0;
-	}
-	else if (keycode == RIGHT)
-	{
-		shift = param->fractal.count.max.x - param->fractal.count.min.x;
-		param->fractal.count.max.x -= shift / 100.0;
-		param->fractal.count.min.x -= shift / 100.0;
+		shift *= -1;
+		move(shift, &param->fractal.count.max.x, &param->fractal.count.min.x);
 	}
 	else if (keycode == DOWN)
 	{
 		shift = param->fractal.count.max.y - param->fractal.count.min.y;
-		param->fractal.count.max.y += shift / 100.0;
-		param->fractal.count.min.y += shift / 100.0;
+		move(shift, &param->fractal.count.max.y, &param->fractal.count.min.y);
 	}
 	else if (keycode == UP)
 	{
-		shift = param->fractal.count.max.y - param->fractal.count.min.y;
-		param->fractal.count.max.y -= shift / 100.0;
-		param->fractal.count.min.y -= shift / 100.0;
+		shift = (param->fractal.count.max.y - param->fractal.count.min.y) * -1;
+		move(shift, &param->fractal.count.max.y, &param->fractal.count.min.y);
 	}
-}
-
-//
-//int		key_rotate(int keycode, t_full_image *param)
-//{
-//	if (keycode == 12)
-//		param->fractal.rotation.z_rot -= 5.0;
-//	else if (keycode == 14)
-//		param->fractal.rotation.z_rot += 5.0;
-//	else if (keycode == 1)
-//		param->fractal.rotation.x_rot -= 5.0;
-//	else if (keycode == 13)
-//		param->fractal.rotation.x_rot += 5.0;
-//	else if (keycode == 0)
-//		param->fractal.rotation.y_rot -= 5.0;
-//	else if (keycode == 2)
-//		param->fractal.rotation.y_rot += 5.0;
-//	else
-//		return (0);
-//	param->fractal.rotate = 1;
-//	return (1);
-//}
-
-int		key_exit(int keycode, t_full_image *param)
-{
-	if (keycode == ESCAPE)
-	{
-		if (param->patrick.on != FAULSE)
-			system("pkill afplay");
-		exit(0);
-	}
-	return (0);
+	else
+		return (0);
+	return (1);
 }

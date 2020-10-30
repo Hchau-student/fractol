@@ -1,6 +1,14 @@
-//
-// Created by Hugor Chau on 2020-01-15.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_full.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hchau <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/02/10 13:44:56 by hchau             #+#    #+#             */
+/*   Updated: 2020/02/10 13:45:03 by hchau            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../incs/header.h"
 
@@ -30,10 +38,14 @@ void	prepare_patrick_mode(t_patrick *full, t_window *ptr)
 	full->stars->mlx_ptr = ptr->mlx;
 	full->on = FAULSE;
 	full->depr = FAULSE;
-	open_image(&full->drawing, "./extra_src/1.xpm", SIZE_WINDOW_X, SIZE_WINDOW_Y);
-	open_image(&full->drawing2, "./extra_src/2.xpm", SIZE_WINDOW_X, SIZE_WINDOW_Y);
-	open_image(&full->backgrownd, "./extra_src/trees.xpm", SIZE_WINDOW_X, SIZE_WINDOW_Y);
-	open_image(&full->stars, "./extra_src/cosm.xpm", SIZE_WINDOW_X, SIZE_WINDOW_Y);
+	full->dr_size = open_image(&full->drawing,
+			"./extra_src/1.xpm", SIZE_WINDOW_X, SIZE_WINDOW_Y);
+	full->nxt_dr_size = open_image(&full->drawing2,
+			"./extra_src/2.xpm", SIZE_WINDOW_X, SIZE_WINDOW_Y);
+	open_image(&full->backgrownd,
+			"./extra_src/trees.xpm", SIZE_WINDOW_X, SIZE_WINDOW_Y);
+	full->stars_size = open_image(&full->stars,
+			"./extra_src/cosm.xpm", SIZE_WINDOW_X, SIZE_WINDOW_Y);
 	put_mask(&full->backgrownd, 0xEC000000, 1400, 926);
 }
 

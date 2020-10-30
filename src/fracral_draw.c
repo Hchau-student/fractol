@@ -1,24 +1,33 @@
-//
-// Created by Hugor Chau on 2020-01-13.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fracral_draw.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hchau <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/02/10 11:54:40 by hchau             #+#    #+#             */
+/*   Updated: 2020/02/10 11:54:59 by hchau            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../incs/header.h"
 
 /*
 **		рассчёт цвета и только
 */
 
-void	recalculate(int *first, int *second, int *third, double t)
+void		recalculate(int *first, int *second, int *third, double t)
 {
 	*first = (int)(9 * (1 - t) * pow(t, 3) * 255);
 	*second = (int)(8.5 * pow((1 - t), 3) * t * 255);
 	*third = (int)(15 * pow((1 - t), 2) * pow(t, 2) * 255);
 }
 
-int		get_color(int iteration, int max_iteration, int shift)
+int			get_color(int iteration, int max_iteration, int shift)
 {
 	double	t;
-	int 	red;
-	int 	green;
+	int		red;
+	int		green;
 	int		blue;
 
 	t = (double)iteration / (double)max_iteration;
@@ -38,7 +47,7 @@ int		get_color(int iteration, int max_iteration, int shift)
 		green = (green & 0x11) * 100;
 		blue = (blue & 0x11) * 100;
 	}
-	else if (shift == GREEN)
+	else
 		recalculate(&blue, &green, &red, t);
 	return (red << 16 | green << 8 | blue);
 }
@@ -47,14 +56,12 @@ int		get_color(int iteration, int max_iteration, int shift)
 **		разбиение на потоки, передача пикселей в следующую функцию
 */
 
-int		get_fractal_img(t_draw_fractal *full)
+int			get_fractal_img(t_draw_fractal *full)
 {
-	int 			y;
-	int 			x;
-	int				i;
+	int				y;
+	int				x;
 
 	y = full->start_line;
-	i = 0;
 	while (y < full->finish_line && y < SIZE_WINDOW_Y)
 	{
 		full->count.constant.y = full->count.max.y - y * full->count.cur.y;
@@ -79,9 +86,9 @@ void		draw_fractal(t_draw_fractal *fractal)
 	int				i;
 
 	fractal->count.cur.x = (fractal->count.max.x - fractal->count.min.x)
-							  / (SIZE_WINDOW_X - 1);
+							/ (SIZE_WINDOW_X - 1);
 	fractal->count.cur.y = (fractal->count.max.y - fractal->count.min.y)
-								 / (SIZE_WINDOW_Y - 1);
+							/ (SIZE_WINDOW_Y - 1);
 	i = 0;
 	while (i < THREADS)
 	{
@@ -89,7 +96,7 @@ void		draw_fractal(t_draw_fractal *fractal)
 		current[i].start_line = i * (SIZE_WINDOW_Y / THREADS);
 		current[i].finish_line = (i + 1) * (SIZE_WINDOW_Y / THREADS);
 		pthread_create(&threads[i], NULL,
-					   (void *(*)(void *))get_fractal_img, (void *)&current[i]);
+					(void *(*)(void *))get_fractal_img, (void *)&current[i]);
 		i++;
 	}
 	while (i-- > 0)

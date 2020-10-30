@@ -1,90 +1,63 @@
-//
-// Created by Hugor Chau on 2020-01-11.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   hooks.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hchau <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/02/10 11:51:19 by hchau             #+#    #+#             */
+/*   Updated: 2020/02/10 11:51:23 by hchau            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../incs/header.h"
 #include <limits.h>
+#include <stdio.h>
 
-
-int		mouse_motion(int x, int y, t_full_image *full)
+static double	get_position(double start, double end, int button)
 {
-	int 	remember_color;
-
-	if (full->fractal.is_mooving == TRUE)
-	{
-		full->fractal.count.k.x = 4 * ((double) x / SIZE_WINDOW_X - 0.5);
-		full->fractal.count.k.y = 4 * ((double) (SIZE_WINDOW_Y - y) / SIZE_WINDOW_Y - 0.5);
-	}
-	if (full->patrick.on != FAULSE)
-	{
-		if (full->patrick.on > 60)
-		{
-			remember_color = full->fractal.color_shift;
-			set_defaults(&full->fractal.count, POSITION);
-			if (remember_color == LAST_COLOR)
-				full->fractal.color_shift = FIRST_COLOR;
-			else
-				full->fractal.color_shift = --remember_color;
-			full->patrick.on = TRUE;
-		}
-		mouse_scroll(SCROLL_DOWN, x, y, full);
-		full->patrick.on++;
-	}
-	draw(full);
-	if (full->patrick.on != FAULSE)
-	{
-		if (full->patrick.on < 10 || (full->patrick.on > 20 && full->patrick.on < 30) || (full->patrick.on > 40 && full->patrick.on < 50 ))
-			mlx_put_image_to_window(full->ptr.mlx, full->ptr.win,
-									full->patrick.drawing->image, x - 20, y - 10);
-		else
-		mlx_put_image_to_window(full->ptr.mlx, full->ptr.win,
-							full->patrick.drawing2->image, x - 20, y - 10);
-	}
-	if (full->patrick.depr && full->patrick.on > 30)
-	{
-		mlx_put_image_to_window(full->ptr.mlx, full->ptr.win,
-								full->patrick.backgrownd->image, (full->patrick.on - 100) * 3, 200);
-	}
-	return (0);
+	if (button == SCROLL_UP)
+		return (start + ((end - start) * ZOOM_IN));
+	return (start + ((end - start) * ZOOM_OUT));
 }
 
-static double	get_position(double start, double end, double zoom)
+int				mouse_scroll(int button, int x, int y, t_full_image *param)
 {
-	return (start + ((end - start) * zoom));
-}
-
-int		mouse_scroll(int button, int x, int y, t_full_image *param)
-{
-	double		zoom;
 	double		new_x;
 	double		new_y;
 
-	if (button == SCROLL_UP)
-		zoom = 1.25;
-	else if (button == SCROLL_DOWN)
-		zoom = 0.80;
-	else
+	if (button != SCROLL_UP && button != SCROLL_DOWN)
 		return (0);
-	new_x = (double)x / (SIZE_WINDOW_X / (param->fractal.count.max.x - param->fractal.count.min.x))
+	new_x = (double)x / (SIZE_WINDOW_X /
+			(param->fractal.count.max.x - param->fractal.count.min.x))
 			+ param->fractal.count.min.x;
-	new_y = (double)y / (SIZE_WINDOW_Y / (param->fractal.count.max.y - param->fractal.count.min.y))
+	new_y = (double)y / (SIZE_WINDOW_Y /
+			(param->fractal.count.max.y - param->fractal.count.min.y))
 			* -1 + param->fractal.count.max.y;
-	param->fractal.count.min.x = get_position(new_x, param->fractal.count.min.x, zoom);
-	param->fractal.count.min.y = get_position(new_y, param->fractal.count.min.y, zoom);
-	param->fractal.count.max.x = get_position(new_x, param->fractal.count.max.x, zoom);
-	param->fractal.count.max.y = get_position(new_y, param->fractal.count.max.y, zoom);
+	param->fractal.count.min.x = get_position(new_x,
+			param->fractal.count.min.x, button);
+	param->fractal.count.min.y = get_position(new_y,
+			param->fractal.count.min.y, button);
+	param->fractal.count.max.x = get_position(new_x,
+			param->fractal.count.max.x, button);
+	param->fractal.count.max.y = get_position(new_y,
+			param->fractal.count.max.y, button);
 	draw(param);
 	return (1);
 }
 
-int		key_press(int keycode, t_full_image *full)
+int				key_press(int keycode, t_full_image *full)
 {
-	printf("%d\n", keycode);
 	if ((key_menu(keycode, full)) || (set_color_shift(keycode, full))
 		|| (key_stop_k_move(keycode, full)) || (key_exit(keycode, full))
-		|| (key_default(keycode, full)) || (key_patrick(keycode, full))
+		|| (key_default(keycode, full))
 		|| (key_map_move(keycode, full)))
 		;
+	key_patrick(keycode, full);
+//	draw(full);
+	if (full->patrick.on != FAULSE)
+		get_meme_pos(full, full->patrick.mouse_x, full->patrick.mouse_y);
 	draw(full);
+	draw_meme_man(full, full->patrick.mouse_x, full->patrick.mouse_y);
 	return (0);
 }

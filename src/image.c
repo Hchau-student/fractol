@@ -53,27 +53,15 @@ int			fill_menu(t_image **menu)
 	return (0);
 }
 
-void		img_from_matrix(t_image **image, t_coord **z_matrix)
-{
-	int 	x;
-	int 	y;
-
-	x = 0;
-	while (x < SIZE_WINDOW_X)
-	{
-		y = 0;
-		while (y < SIZE_WINDOW_Y)
-		{
-			image_set_pixel(image, z_matrix[x][y].x, z_matrix[x][y].y, z_matrix[x][y].color);
-			y++;
-		}
-		x++;
-	}
-}
-
 void		clear_image(t_image **image, unsigned long size)
 {
 	ft_bzero((*image)->data_addr, size);
+}
+
+void		free_img(t_image **image, unsigned long size)
+{
+	clear_image(image, size);
+	mlx_destroy_image((*image)->mlx_ptr, (*image)->data_addr);
 }
 
 void		create_img(t_image **image, int x, int y, t_window *local)

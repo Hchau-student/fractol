@@ -1,15 +1,16 @@
 NAME = fractol
-CC = gcc -Ofast
+CC = gcc -Ofast -Wall -Wextra -Werror
 SRC_DIR = ./src/
 OBJ_DIR = obj/
 LIBFT_DIR = libft/
 INC_DIRS = -I ./includes/ -I /usr/local/include
 INC_LIB = -L /usr/local/lib/
-FRAMEWORK = -lmlx -framework OpenGL -framework AppKit
+FRAMEWORK = -lmlx -framework OpenGL -framework AppKit -framework OpenCL
 
-SRCS = main.c check_name.c error.c hooks.c image.c start_programm.c \
-		fracral_draw.c rotate_try.c fractal_formulas.c side_images.c \
-		key_events.c actions.c init_full.c draw_image.c cerpinsky_try.c \
+SRCS = main.c check_name.c hooks.c image.c start_programm.c \
+		fracral_draw.c fractal_formulas.c side_images.c \
+		key_events.c actions.c init_full.c draw_image.c \
+		mouse_motion.c \
 
 OBJ = ${SRCS:c=o}
 

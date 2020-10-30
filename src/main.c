@@ -12,11 +12,29 @@
 
 #include "../incs/header.h"
 
-int		main(int ac, char **check)
+void		fractol_error(char *reason)
+{
+	if (ft_strequ(reason, H))
+	{
+		ft_putstr(H1);
+		ft_putstr(H2);
+		ft_putstr(H3);
+		ft_putstr(H4);
+		ft_putstr(H5);
+		ft_putstr(H6);
+	}
+	else
+		ft_putstr(reason);
+	ft_putstr(USAGE);
+	exit(0);
+}
+
+int			main(int ac, char **check)
 {
 	if (ac < 2)
 		fractol_error(MISSING_NAME);
+	if (ac > 2)
+		fractol_error(TOO_MUCH);
 	check_name(check, ac);
-//	my_pow(2.899988898898989);
 	return (0);
 }
